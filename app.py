@@ -1,9 +1,10 @@
+from os import abort
 from flask import Flask,render_template,request,redirect
 from models import db,StudentModel
  
 app = Flask(__name__)
  
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///student.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
  
@@ -17,23 +18,19 @@ def create():
         return render_template('createpage.html')
  
     if request.method == 'POST':
-
-        hobby = request.form.getlist('hobbies')
-        #hobbies = ','.join(map(str, hobby))
-        hobbies=",".join(map(str, hobby))
-
-
+        id = request.form['id']
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         email = request.form['email']
-        gender = request.form['gender']
-        hobbies = hobbies
+        dob = request.form['dob']
+        amount_due = request.form['amount_due']
         students = StudentModel(
+            id=id,
             first_name=first_name,
             last_name=last_name,
             email=email,
-            gender=gender, 
-            hobbies=hobbies
+            dob=dob, 
+            amount_due=amount_due
         )
         db.session.add(students)
         db.session.commit()
@@ -74,21 +71,21 @@ def update(id):
     #     movies = request.form['movies']
     #     hobbies = tv + ' ' +  cricket + ' ' + movies
     #     print('H' + hobbies)
-        hobby = request.form.getlist('hobbies')
         #hobbies = ','.join(map(str, hobby))
-        hobbies =  ",".join(map(str, hobby)) 
+        id = request.form['id']
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         email = request.form['email']
-        gender = request.form['gender']
-        hobbies = hobbies 
+        dob = request.form['dob']
+        amount_due = request.form['amount_due']
 
         student = StudentModel(
+            id=id,
             first_name=first_name,
             last_name=last_name,
             email=email,
-            gender=gender, 
-            hobbies=hobbies
+            dob=dob, 
+            amount_due=amount_due
         )
         db.session.add(student)
         db.session.commit()
